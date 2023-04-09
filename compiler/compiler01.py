@@ -1,7 +1,7 @@
 keywords = ['program', 'begin', 'end', 'var', 'integer', 'if', 'then', 'else', 'do', 'while']
 operators = ['+', '-', '=', '>', '<']
 boarders = [';', ',', ':']
-path = "C:\\Users\\Administrator\\Desktop\\in.txt"
+path = "lib1in.txt"
 f = open(path, encoding='utf-8')
 
 
