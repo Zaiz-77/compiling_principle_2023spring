@@ -1,6 +1,7 @@
-keywords = ['program', 'begin', 'end', 'var', 'integer', 'if', 'then', 'else', 'do', 'while']
-operators = ['+', '-', '=', '>', '<']
-boarders = [';', ',', ':']
+keywords = {'program', 'begin', 'end', 'var', 'integer', 'if', 'then', 'else', 'do', 'while'}
+operators = {'+', '-', '=', '>', '<'}
+boarders = {';', ',', ':'}
+dual = {':', '<', '>'}
 path = "lib1in.txt"
 f = open(path, encoding='utf-8')
 
@@ -35,7 +36,7 @@ def alpha_processor(ch: chr) -> chr:
     return ch
 
 
-def boarder_processor(ch: chr) -> chr:
+def other_processor(ch: chr) -> chr:
     if is_operator(ch):
         print(f'(4, {ch}) operator')
     elif is_board(ch):
@@ -44,15 +45,16 @@ def boarder_processor(ch: chr) -> chr:
     return ch
 
 
-def assign_processor(ch: chr) -> chr:
-    if ch == ':':
+def dual_processor(ch: chr) -> chr:
+    out = ch
+    ch = f.read(1)
+    if ch == '=':
+        out += ch
+        print(f'(4, {out}) operator')
         ch = f.read(1)
-        if ch == '=':
-            print(f'(4, :=) operator')
-            ch = f.read(1)
-        else:
-            print(f'(5, :) boarder')
-            return ch
+    else:
+        print(f'(4, {out}) operator' if out in "<>" else f'(5, {out}) boarder')
+        return ch
     return ch
 
 
@@ -63,8 +65,7 @@ if __name__ == '__main__':
             p = alpha_processor(p)
         elif p.isdigit():
             p = const_processor(p)
-        elif p == ':':
-            p = assign_processor(p)
+        elif p in dual:
+            p = dual_processor(p)
         else:
-            p = boarder_processor(p)
-
+            p = other_processor(p)
