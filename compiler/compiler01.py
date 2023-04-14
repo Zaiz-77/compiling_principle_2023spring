@@ -35,12 +35,24 @@ def alpha_processor(ch: chr) -> chr:
     return ch
 
 
-def other_processor(ch: chr) -> chr:
+def boarder_processor(ch: chr) -> chr:
     if is_operator(ch):
         print(f'(4, {ch}) operator')
     elif is_board(ch):
         print(f'(5, {ch}) boarder')
     ch = f.read(1)
+    return ch
+
+
+def assign_processor(ch: chr) -> chr:
+    if ch == ':':
+        ch = f.read(1)
+        if ch == '=':
+            print(f'(4, :=) operator')
+            ch = f.read(1)
+        else:
+            print(f'(5, :) boarder')
+            return ch
     return ch
 
 
@@ -51,6 +63,8 @@ if __name__ == '__main__':
             p = alpha_processor(p)
         elif p.isdigit():
             p = const_processor(p)
+        elif p == ':':
+            p = assign_processor(p)
         else:
-            p = other_processor(p)
+            p = boarder_processor(p)
 
